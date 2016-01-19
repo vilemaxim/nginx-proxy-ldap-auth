@@ -1,7 +1,7 @@
-This is a fork of the orginal jwilder's [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy/)
+This is a fork of the original jwilder's [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy/)
 The only change I made was I added ldap auth support. I borrowed a lot from [h3nrik/nginx-ldap](https://hub.docker.com/r/h3nrik/nginx-ldap/) But I took a different approach to building the [ldap auth module](https://github.com/kvspb/nginx-auth-ldap). I download the source deb for the same version in jwilder uses, add the ldap auth module, then build and install the new deb.
 
-My goal is to harminize with jwilder's project. 
+My goal is to harmonize with jwilder's project. 
 
 To configure ldap auth, I added the ldap information to the /etc/nginx/proxy.conf file. I have not set up a per vertual host option yet, but I believe that would work too.
 
@@ -12,7 +12,7 @@ TODO:
 * 
 
 
-Below if the orginal README from jwilder's project.
+Below if the original README from jwilder's project.
 
 
 ![nginx 1.9.6](https://img.shields.io/badge/nginx-1.9.6-brightgreen.svg) ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg) [![Build](https://circleci.com/gh/jwilder/nginx-proxy.svg?&style=shield&circle-token=2da3ee844076a47371bd45da81cf27409ca7306a)](https://circleci.com/gh/jwilder/nginx-proxy)
