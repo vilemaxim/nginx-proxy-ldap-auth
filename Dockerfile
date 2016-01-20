@@ -11,7 +11,7 @@ RUN apt-get update
 RUN apt-get install -y -q --no-install-recommends ca-certificates wget dpkg-dev git  libldap2-dev
 
 RUN git clone https://github.com/kvspb/nginx-auth-ldap.git
-RUN apt-get source nginx=1.9.6-1~jessie
+RUN apt-get source nginx=1.9.9-1~jessie
 RUN apt-get build-dep -y -q nginx
 RUN sed -i 's/with-file-aio/& \\\n              \-\-add-module=\/nginx-auth-ldap\//g' ./nginx-1.9.6/debian/rules
 
