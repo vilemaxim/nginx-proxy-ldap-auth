@@ -3,13 +3,16 @@ The only change I made was I added ldap auth support. I borrowed a lot from [h3n
 
 My goal is to harmonize with jwilder's project. 
 
-To configure ldap auth, I added the ldap information to the /etc/nginx/proxy.conf file. I have not set up a per vertual host option yet, but I believe that would work too.
+To configure ldap auth, I added the ldap server configuration to information to the /etc/nginx/proxy.conf file, then created a 
+vhost.d/default_location file with
+  auth_ldap "Forbidden";
+  auth_ldap_servers ldapserver;
 
 TODO:
 * Clean up the files that were downloaded
 * Remove dev tools
 * add sha checking on downloads that don't come from apt
-* 
+
 
 
 Below if the original README from jwilder's project.
