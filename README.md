@@ -12,6 +12,8 @@ TODO:
 * Clean up the files that were downloaded
 * Remove dev tools
 * add sha checking on downloads that don't come from apt
+* Modify nginx template to check for a ladp-auth file.
+* Modify nginx template to not use ldap-auth unless they are using ssl (maybe create an override for this)
 
 
 
