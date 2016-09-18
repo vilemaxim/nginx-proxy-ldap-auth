@@ -16,7 +16,7 @@ RUN apt-get update \
 RUN git clone https://github.com/kvspb/nginx-auth-ldap.git
 RUN apt-get source nginx=1.11.3-1~jessie
 RUN apt-get build-dep -y -q nginx
-RUN sed -i 's/with-file-aio/& \\\n              \-\-add-module=\/nginx-auth-ldap\//g' ./nginx-1.9.9/debian/rules
+RUN sed -i 's/with-file-aio/& \\\n              \-\-add-module=\/nginx-auth-ldap\//g' ./nginx-1.11.3/debian/rules
 
 RUN cd ./nginx-1.11.3/ &&  dpkg-buildpackage -b
 RUN dpkg -i ./nginx_1.11.3-1~jessie_amd64.deb
