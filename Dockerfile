@@ -18,7 +18,7 @@ RUN apt-get source nginx=1.11.6-1~jessie
 RUN apt-get build-dep -y -q nginx
 RUN sed -i 's/with-file-aio/& \\\n              \-\-add-module=\/nginx-auth-ldap\//g' ./nginx-1.11.6/debian/rules
 
-RUN cd ./nginx-1.11.3/ &&  dpkg-buildpackage -b
+RUN cd ./nginx-1.11.6/ &&  dpkg-buildpackage -b
 RUN dpkg -i ./nginx_1.11.6-1~jessie_amd64.deb
 
 RUN apt-get clean \
