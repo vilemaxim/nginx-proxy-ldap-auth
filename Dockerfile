@@ -3,11 +3,25 @@ FROM nginx:1.13
 # I only modified a few lines
 MAINTAINER Jeffrey Brite jeff@c4tech.com
 
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
 RUN apt update \
  && apt install -y -q --no-install-recommends \
- apt-transport-https
-
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+ apt-transport-https \
+ && \
+ NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
+	found=''; \
+	for server in \
+		ha.pool.sks-keyservers.net \
+		hkp://keyserver.ubuntu.com:80 \
+		hkp://p80.pool.sks-keyservers.net:80 \
+		pgp.mit.edu \
+	; do \
+		echo "Fetching GPG key $NGINX_GPGKEY from $server"; \
+		apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; \
+	done; \
+test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
+ 
 RUN echo "deb-src https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list
 
 
