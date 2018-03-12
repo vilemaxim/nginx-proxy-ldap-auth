@@ -4,14 +4,14 @@ FROM nginx:1.13
 MAINTAINER Jeffrey Brite jeff@c4tech.com
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-RUN echo "deb-src https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list
+RUN echo "deb-src https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list
 
 
 # Install wget and install/updates certificates
 # dpkg and git for nginx ldap
 RUN apt-get update \
  && apt-get install -y -q --no-install-recommends \
-    ca-certificates \
+    ca-certificates apt-transport-https \
     wget dpkg-dev git libldap2-dev
 
 RUN git clone https://github.com/kvspb/nginx-auth-ldap.git
@@ -25,7 +25,8 @@ RUN cd ./nginx-1.13.9/ &&  dpkg-buildpackage -b
 RUN dpkg -i ./nginx_1.13.9-1~strech_amd64.deb
 
 RUN apt-get clean \
- && rm -r /var/lib/apt/lists/*
+ && apt-get remove --purge --auto-remove -y apt-transport-https ca-certificates \
+ && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list
 
 # Configure Nginx and apply fix for very long server names
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf \
