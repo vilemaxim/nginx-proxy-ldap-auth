@@ -3,6 +3,10 @@ FROM nginx:1.13
 # I only modified a few lines
 MAINTAINER Jeffrey Brite jeff@c4tech.com
 
+RUN apt update \
+ && apt install -y -q --no-install-recommends \
+ apt-transport-https
+
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN echo "deb-src https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list
 
@@ -11,7 +15,7 @@ RUN echo "deb-src https://nginx.org/packages/mainline/debian/ stretch nginx" >> 
 # dpkg and git for nginx ldap
 RUN apt-get update \
  && apt-get install -y -q --no-install-recommends \
-    ca-certificates apt-transport-https \
+    ca-certificates \
     wget dpkg-dev git libldap2-dev
 
 RUN git clone https://github.com/kvspb/nginx-auth-ldap.git
