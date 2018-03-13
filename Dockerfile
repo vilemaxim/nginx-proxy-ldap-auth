@@ -21,8 +21,9 @@ RUN NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
 		apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; \
 	done; 
 	
-RUN test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
-  apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/*
+#RUN test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
+#  apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/*
+RUN  apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list \
  && echo "deb-src https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list
