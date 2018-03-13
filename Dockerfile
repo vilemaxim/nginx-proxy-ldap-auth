@@ -8,7 +8,8 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 RUN apt update \
  && apt install -y -q --no-install-recommends \
  apt-transport-https gnupg1
-RUN NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; #\
+RUN NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; 
+#\
 #	found=''; \
 #	for server in \
 #		ha.pool.sks-keyservers.net \
