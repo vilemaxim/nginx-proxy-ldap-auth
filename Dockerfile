@@ -62,7 +62,7 @@ RUN tar -C /usr/local/bin -xvzf docker-gen-linux-amd64-0.7.3.tar.gz
 RUN rm /docker-gen-linux-amd64-0.7.3.tar.gz
 
 
-COPY network_internal.conf /etc/nginx/
+#COPY network_internal.conf /etc/nginx/
 
 COPY . /app/
 WORKDIR /app/
