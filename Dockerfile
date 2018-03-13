@@ -61,15 +61,16 @@ RUN wget https://github.com/jwilder/docker-gen/releases/download/0.7.3/docker-ge
 RUN tar -C /usr/local/bin -xvzf docker-gen-linux-amd64-0.7.3.tar.gz
 RUN rm /docker-gen-linux-amd64-0.7.3.tar.gz
 
-RUN apt-get clean \
- && apt-get remove --purge --auto-remove -y apt-transport-https ca-certificates wget dpkg-dev git \
- && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list
-
 
 COPY network_internal.conf /etc/nginx/
 
 COPY . /app/
 WORKDIR /app/
+
+RUN apt-get clean \
+ && apt-get remove --purge --auto-remove -y apt-transport-https ca-certificates wget dpkg-dev git \
+ && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list
+
 
 ENV DOCKER_HOST unix:///tmp/docker.sock
 
