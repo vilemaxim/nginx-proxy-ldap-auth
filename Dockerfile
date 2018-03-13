@@ -7,7 +7,7 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 RUN apt update \
  && apt install -y -q --no-install-recommends \
- apt-transport-https gnupg1
+ apt-transport-https gnupg1 ca-certificates
 RUN NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
 	found=''; \
 	for server in \
@@ -30,7 +30,6 @@ RUN echo "deb https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc
 # dpkg and git for nginx ldap
 RUN apt-get update \
  && apt-get install -y -q --no-install-recommends \
-    ca-certificates \
     wget dpkg-dev git libldap2-dev
 
 RUN git clone https://github.com/kvspb/nginx-auth-ldap.git
