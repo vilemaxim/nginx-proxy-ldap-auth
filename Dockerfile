@@ -40,7 +40,7 @@ RUN apt-get build-dep -y -q nginx
 RUN sed -i 's/with-file-aio/& \\\n              \-\-add-module=\/nginx-auth-ldap\//g' ./nginx-1.13.9/debian/rules
 
 RUN cd ./nginx-1.13.9/ &&  dpkg-buildpackage -b
-RUN dpkg -i ./nginx_1.13.9-1~strech_amd64.deb
+RUN dpkg -i ../nginx_1.13.9-1~strech_amd64.deb
 
 RUN apt-get clean \
  && apt-get remove --purge --auto-remove -y apt-transport-https ca-certificates wget dpkg-dev git \
