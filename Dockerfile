@@ -42,10 +42,6 @@ RUN sed -i 's/with-file-aio/& \\\n              \-\-add-module=\/nginx-auth-ldap
 RUN cd ./nginx-1.13.9/ &&  dpkg-buildpackage -b
 RUN dpkg -i ./nginx_1.13.9-1~stretch_amd64.deb
 
-RUN apt-get clean \
- && apt-get remove --purge --auto-remove -y apt-transport-https ca-certificates wget dpkg-dev git \
- && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list
-
 # Configure Nginx and apply fix for very long server names
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf \
  && sed -i 's/worker_processes  1/worker_processes  auto/' /etc/nginx/nginx.conf
@@ -64,6 +60,11 @@ RUN chmod u+x /usr/local/bin/forego
 RUN wget https://github.com/jwilder/docker-gen/releases/download/0.7.3/docker-gen-linux-amd64-0.7.3.tar.gz
 RUN tar -C /usr/local/bin -xvzf docker-gen-linux-amd64-0.7.3.tar.gz
 RUN rm /docker-gen-linux-amd64-0.7.3.tar.gz
+
+RUN apt-get clean \
+ && apt-get remove --purge --auto-remove -y apt-transport-https ca-certificates wget dpkg-dev git \
+ && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list
+
 
 COPY network_internal.conf /etc/nginx/
 
