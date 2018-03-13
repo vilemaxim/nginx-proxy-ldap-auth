@@ -7,7 +7,8 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 RUN apt update \
  && apt install -y -q --no-install-recommends \
- apt-transport-https gnupg1 ca-certificates
+ apt-transport-https gnupg1 ca-certificates \
+  wget dpkg-dev git libldap2-dev
 RUN NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
 	found=''; \
 	for server in \
@@ -20,7 +21,8 @@ RUN NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
 		apt-key adv --keyserver "$server" --keyserver-options timeout=10 --recv-keys "$NGINX_GPGKEY" && found=yes && break; \
 	done; 
 	
-RUN test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1;
+RUN test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
+  apt-get remove --purge --auto-remove -y gnupg1 && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list \
  && echo "deb-src https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc/apt/sources.list.d/nginx.list
@@ -28,22 +30,19 @@ RUN echo "deb https://nginx.org/packages/mainline/debian/ stretch nginx" >> /etc
 
 # Install wget and install/updates certificates
 # dpkg and git for nginx ldap
-RUN apt-get update \
- && apt-get install -y -q --no-install-recommends \
-    wget dpkg-dev git libldap2-dev
 
 RUN git clone https://github.com/kvspb/nginx-auth-ldap.git
-#RUN apt-get source nginx=1.11.6-1~jessie
-RUN apt-get source nginx=1.13.9-1~stretch
+
+RUN apt update \
+ && apt-get source nginx=1.13.9-1~stretch
 RUN apt-get build-dep -y -q nginx
-#RUN sed -i 's/with-file-aio/& \\\n              \-\-add-module=\/nginx-auth-ldap\//g' ./nginx-1.11.6/debian/rules
 RUN sed -i 's/with-file-aio/& \\\n              \-\-add-module=\/nginx-auth-ldap\//g' ./nginx-1.13.9/debian/rules
 
 RUN cd ./nginx-1.13.9/ &&  dpkg-buildpackage -b
 RUN dpkg -i ./nginx_1.13.9-1~strech_amd64.deb
 
 RUN apt-get clean \
- && apt-get remove --purge --auto-remove -y apt-transport-https ca-certificates \
+ && apt-get remove --purge --auto-remove -y apt-transport-https ca-certificates wget dpkg-dev git \
  && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx.list
 
 # Configure Nginx and apply fix for very long server names
